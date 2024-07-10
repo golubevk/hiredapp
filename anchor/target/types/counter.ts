@@ -92,7 +92,7 @@ export type Counter = {
   accounts: [
     {
       name: 'counter';
-      discriminator: [135, 64, 223, 168, 233, 143, 162, 215];
+      discriminator: [255, 176, 4, 245, 188, 253, 124, 25];
     }
   ];
   types: [
