@@ -1,6 +1,7 @@
 import { AppLayout } from '@/components/ui/app-layout';
 import { ClusterProvider } from '@/components/cluster/cluster-data-access';
 import { SolanaProvider } from '@/components/solana/solana-provider';
+import { ReactQueryProvider } from './react-query-provider';
 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { ThemeProvider } from '@mui/material/styles';
@@ -27,17 +28,19 @@ export default async function RootLayout({
     <html lang={locale}>
       <NextIntlClientProvider messages={messages}>
         <body>
-          <ClusterProvider>
-            <SolanaProvider>
-              <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-                <ThemeProvider theme={theme}>
-                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                  <CssBaseline />
-                  <AppLayout>{children}</AppLayout>
-                </ThemeProvider>
-              </AppRouterCacheProvider>
-            </SolanaProvider>
-          </ClusterProvider>
+          <ReactQueryProvider>
+            <ClusterProvider>
+              <SolanaProvider>
+                <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+                  <ThemeProvider theme={theme}>
+                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                    <CssBaseline />
+                    <AppLayout>{children}</AppLayout>
+                  </ThemeProvider>
+                </AppRouterCacheProvider>
+              </SolanaProvider>
+            </ClusterProvider>
+          </ReactQueryProvider>
         </body>
       </NextIntlClientProvider>
     </html>

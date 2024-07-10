@@ -1,3 +1,21 @@
 {
-  "index": ""
+  "index": "",
+  "menu": {
+    "questions": "Questions",
+    "question-sets": "Question sets",
+    "jobs": "Jobs",
+    "videos": "Videos",
+    "account": "Account",
+    "clusters": "Clusters"
+  },
+
+  "questions": {
+    "title": "Questions",
+    "add-question": "Add question"
+  },
+
+  "add-question": {
+    "title": "Add question",
+    "submit": "submit"
+  }
 }
