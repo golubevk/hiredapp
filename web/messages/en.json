@@ -15,7 +15,16 @@
   },
 
   "add-question": {
-    "title": "Add question",
-    "submit": "submit"
+    "title": "Add question"
+  },
+
+  "edit-question": {
+    "title": "Edit question"
+  },
+
+  "question-form": {
+    "submit": "submit",
+    "cancel": "Cancel",
+    "delete": "Delete"
   }
 }

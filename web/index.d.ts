@@ -1,14 +1,6 @@
 import { Theme as ThemeMui } from '@mui/material';
 import en from './messages/en.json';
 
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      PROGRAM_ID: string;
-    }
-  }
-}
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare module '*.svg' {
   const content: any;

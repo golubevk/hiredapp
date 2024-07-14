@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-check
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
