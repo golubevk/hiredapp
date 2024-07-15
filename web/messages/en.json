@@ -1,3 +1,49 @@
 {
-  "index": ""
+  "index": "",
+  "menu": {
+    "questions": "Questions",
+    "question-sets": "Question sets",
+    "jobs": "Jobs",
+    "videos": "Videos",
+    "account": "Account",
+    "clusters": "Clusters"
+  },
+
+  "questions": {
+    "title": "Questions",
+    "add-question": "Add question"
+  },
+
+  "add-question": {
+    "title": "Add question"
+  },
+
+  "edit-question": {
+    "title": "Edit question"
+  },
+
+  "question-form": {
+    "submit": "submit",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+
+  "question-sets": {
+    "title": "Question sets",
+    "add-set": "Add set"
+  },
+
+  "add-question-set": {
+    "title": "Add question set"
+  },
+
+  "edit-question-set": {
+    "title": "Edit question set"
+  },
+
+  "question-set": {
+    "submit": "submit",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  }
 }

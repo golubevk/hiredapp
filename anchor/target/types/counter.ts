@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/counter.json`.
  */
 export type Counter = {
-  address: 'a7f51bQGm39MX5kjVLeKGDwfbRBbJdno9RodGEPbN3h';
+  address: '3wWvigDmpRgMfpoXZkJx2vt951o4FRvECc5z3FxSVseF';
   metadata: {
     name: 'counter';
     version: '0.1.0';
@@ -14,54 +14,27 @@ export type Counter = {
   };
   instructions: [
     {
-      name: 'close';
-      discriminator: [98, 165, 201, 177, 108, 65, 206, 96];
+      name: 'createQuestion';
+      discriminator: [222, 74, 49, 30, 160, 220, 179, 27];
       accounts: [
         {
-          name: 'payer';
+          name: 'question';
           writable: true;
-          signer: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
         },
         {
-          name: 'counter';
-          writable: true;
-        }
-      ];
-      args: [];
-    },
-    {
-      name: 'decrement';
-      discriminator: [106, 227, 168, 59, 248, 27, 150, 101];
-      accounts: [
-        {
-          name: 'counter';
-          writable: true;
-        }
-      ];
-      args: [];
-    },
-    {
-      name: 'increment';
-      discriminator: [11, 18, 104, 9, 104, 174, 59, 33];
-      accounts: [
-        {
-          name: 'counter';
-          writable: true;
-        }
-      ];
-      args: [];
-    },
-    {
-      name: 'initialize';
-      discriminator: [175, 175, 109, 31, 13, 152, 155, 237];
-      accounts: [
-        {
-          name: 'payer';
-          writable: true;
-          signer: true;
-        },
-        {
-          name: 'counter';
+          name: 'owner';
           writable: true;
           signer: true;
         },
@@ -70,40 +43,280 @@ export type Counter = {
           address: '11111111111111111111111111111111';
         }
       ];
-      args: [];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        },
+        {
+          name: 'text';
+          type: 'string';
+        }
+      ];
     },
     {
-      name: 'set';
-      discriminator: [198, 51, 53, 241, 116, 29, 126, 194];
+      name: 'createQuestionSet';
+      discriminator: [162, 117, 193, 74, 89, 229, 99, 123];
       accounts: [
         {
-          name: 'counter';
+          name: 'questionSet';
           writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
         }
       ];
       args: [
         {
-          name: 'value';
-          type: 'u8';
+          name: 'id';
+          type: 'string';
+        },
+        {
+          name: 'title';
+          type: 'string';
+        },
+        {
+          name: 'questions';
+          type: {
+            vec: 'string';
+          };
+        }
+      ];
+    },
+    {
+      name: 'deleteQuestion';
+      discriminator: [157, 108, 81, 22, 30, 165, 196, 123];
+      accounts: [
+        {
+          name: 'question';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
+        }
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        }
+      ];
+    },
+    {
+      name: 'deleteQuestionSet';
+      discriminator: [227, 30, 229, 252, 34, 101, 174, 206];
+      accounts: [
+        {
+          name: 'questionSet';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
+        }
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        }
+      ];
+    },
+    {
+      name: 'updateQuestion';
+      discriminator: [3, 88, 210, 44, 238, 36, 201, 151];
+      accounts: [
+        {
+          name: 'question';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
+        }
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        },
+        {
+          name: 'text';
+          type: 'string';
+        }
+      ];
+    },
+    {
+      name: 'updateQuestionSet';
+      discriminator: [188, 98, 127, 78, 201, 30, 105, 79];
+      accounts: [
+        {
+          name: 'questionSet';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
+        }
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        },
+        {
+          name: 'title';
+          type: 'string';
+        },
+        {
+          name: 'questions';
+          type: {
+            vec: 'string';
+          };
         }
       ];
     }
   ];
   accounts: [
     {
-      name: 'counter';
-      discriminator: [255, 176, 4, 245, 188, 253, 124, 25];
+      name: 'questionSetState';
+      discriminator: [200, 127, 50, 187, 32, 198, 43, 140];
+    },
+    {
+      name: 'questionState';
+      discriminator: [31, 130, 36, 192, 203, 204, 21, 247];
     }
   ];
   types: [
     {
-      name: 'counter';
+      name: 'questionSetState';
       type: {
         kind: 'struct';
         fields: [
           {
-            name: 'count';
-            type: 'u8';
+            name: 'owner';
+            type: 'pubkey';
+          },
+          {
+            name: 'id';
+            type: 'string';
+          },
+          {
+            name: 'title';
+            type: 'string';
+          },
+          {
+            name: 'questions';
+            type: {
+              vec: 'string';
+            };
+          }
+        ];
+      };
+    },
+    {
+      name: 'questionState';
+      type: {
+        kind: 'struct';
+        fields: [
+          {
+            name: 'owner';
+            type: 'pubkey';
+          },
+          {
+            name: 'id';
+            type: 'string';
+          },
+          {
+            name: 'text';
+            type: 'string';
           }
         ];
       };
