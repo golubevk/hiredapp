@@ -8,7 +8,12 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { useProgram } from '@/hooks/useProgram';
 
-export const QuestionsList: React.FC = () => {
+interface IProps {
+  selected: string[];
+  onChange: (value: string[]) => void;
+}
+
+export const Questions: React.FC<IProps> = ({ selected, onChange }) => {
   const { questions: accounts, getProgramAccount } = useProgram();
 
   if (getProgramAccount.isLoading) return null;
@@ -33,26 +38,30 @@ export const QuestionsList: React.FC = () => {
     );
   }
 
+  const handleChange = (value: string) => {
+    const nextSelected = selected.some((i) => i === value)
+      ? selected.filter((s) => s !== value)
+      : [...selected, value];
+
+    onChange(nextSelected);
+  };
+
   return (
-    <div>
-      {!accounts.data?.length ? (
-        <Alert severity="success">
-          <AlertTitle>No accounts</AlertTitle>
-          No accounts found. Create one above to get started.
-        </Alert>
-      ) : (
-        <List>
-          {accounts.data.map((question) => (
-            <ListItemButton
-              key={question.publicKey.toString()}
-              disableGutters
-              href={`/questions/${question.publicKey.toString()}`}
-            >
-              <ListItemText>{question.account.text}</ListItemText>
-            </ListItemButton>
-          ))}
-        </List>
-      )}
-    </div>
+    <List>
+      {accounts.data.map((question) => {
+        const key = question.publicKey.toString();
+        const selectedItem = selected.some((s) => s === key);
+        return (
+          <ListItemButton
+            key={key}
+            disableGutters
+            selected={selectedItem}
+            onClick={() => handleChange(key)}
+          >
+            <ListItemText>{question.account.text}</ListItemText>
+          </ListItemButton>
+        );
+      })}
+    </List>
   );
 };

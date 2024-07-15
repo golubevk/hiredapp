@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { QuestionForm } from '../question-form';
+import { QuestionSet as QuestionSetForm } from '../question-set';
 
 import { useProgram } from '@/hooks/useProgram';
 
@@ -10,9 +10,9 @@ interface IProps {
   address: PublicKey;
 }
 
-export const Question: React.FC<IProps> = ({ address }) => {
-  const { useQuestion } = useProgram();
-  const accountQuery = useQuestion(address);
+export const QuestionSet: React.FC<IProps> = ({ address }) => {
+  const { useQuestionSet } = useProgram();
+  const accountQuery = useQuestionSet(address);
 
   const account = useMemo(() => {
     if (accountQuery.isLoading || !accountQuery.data) return;
@@ -25,5 +25,5 @@ export const Question: React.FC<IProps> = ({ address }) => {
 
   if (accountQuery.isLoading) return null;
 
-  return <QuestionForm data={account} />;
+  return <QuestionSetForm data={account} />;
 };

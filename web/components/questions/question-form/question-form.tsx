@@ -78,9 +78,7 @@ export const QuestionForm: React.FC<IProps> = (props) => {
       <Grid container item xs={12} justifyContent="end">
         {data && <DeleteQuestion account={data} />}
         <Box flexGrow={1} />
-        <Button disabled={!isFormValid} onClick={handleCancel}>
-          {t('cancel')}
-        </Button>
+        <Button onClick={handleCancel}>{t('cancel')}</Button>
         <Button
           variant="contained"
           type="submit"

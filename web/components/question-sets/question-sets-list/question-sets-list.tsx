@@ -8,8 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { useProgram } from '@/hooks/useProgram';
 
-export const QuestionsList: React.FC = () => {
-  const { questions: accounts, getProgramAccount } = useProgram();
+export const QuestionSetsList: React.FC = () => {
+  const { questionSets: accounts, getProgramAccount } = useProgram();
 
   if (getProgramAccount.isLoading) return null;
 
@@ -46,9 +46,9 @@ export const QuestionsList: React.FC = () => {
             <ListItemButton
               key={question.publicKey.toString()}
               disableGutters
-              href={`/questions/${question.publicKey.toString()}`}
+              href={`/question-sets/${question.publicKey.toString()}`}
             >
-              <ListItemText>{question.account.text}</ListItemText>
+              <ListItemText>{question.account.title}</ListItemText>
             </ListItemButton>
           ))}
         </List>

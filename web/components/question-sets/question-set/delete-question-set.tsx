@@ -5,17 +5,17 @@ import Button from '@mui/material/Button';
 
 import { useProgram } from '@/hooks/useProgram';
 
-import { QuestionAccount } from '@/interfaces/question';
+import { QuestionSetAccount } from '@/interfaces/question-set';
 
 interface IProps {
-  account: QuestionAccount;
+  account: QuestionSetAccount;
 }
 
-export const DeleteQuestion: React.FC<IProps> = ({ account }) => {
-  const { useDeleteQuestion } = useProgram();
-  const deleteAccount = useDeleteQuestion(account.publicKey);
+export const DeleteQuestionSet: React.FC<IProps> = ({ account }) => {
+  const { useDeleteQuestionSet } = useProgram();
+  const deleteAccount = useDeleteQuestionSet(account.publicKey);
 
-  const t = useTranslations('question-form');
+  const t = useTranslations('question-set');
   const handleDelete = () => {
     const confirmed = window.confirm('Are you sure?');
 

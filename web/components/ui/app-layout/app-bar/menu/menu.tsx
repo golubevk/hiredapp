@@ -8,7 +8,7 @@ import { Route } from '@/interfaces/routes';
 
 import { Link, List } from './menu.styles';
 
-const pages = [Route.QUESTIONS];
+const pages = [Route.QUESTIONS, Route.SETS];
 
 export const Menu: React.FC = () => {
   const pathname = usePathname();

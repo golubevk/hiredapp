@@ -26,5 +26,24 @@
     "submit": "submit",
     "cancel": "Cancel",
     "delete": "Delete"
+  },
+
+  "question-sets": {
+    "title": "Question sets",
+    "add-set": "Add set"
+  },
+
+  "add-question-set": {
+    "title": "Add question set"
+  },
+
+  "edit-question-set": {
+    "title": "Edit question set"
+  },
+
+  "question-set": {
+    "submit": "submit",
+    "cancel": "Cancel",
+    "delete": "Delete"
   }
 }

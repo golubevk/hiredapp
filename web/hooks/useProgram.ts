@@ -14,6 +14,7 @@ import { useAnchorProvider } from '@/components/solana/solana-provider';
 import { PublicKey, type Cluster } from '@solana/web3.js';
 import { Route } from '@/interfaces/routes';
 import { type IQuestion } from '@/interfaces/question';
+import { type IQuestionSet } from '@/interfaces/question-set';
 
 export function useProgram() {
   const { connection } = useConnection();
@@ -29,15 +30,26 @@ export function useProgram() {
   );
   const program = getQuestionsProgram(provider);
 
-  const accounts = useQuery({
+  const questions = useQuery({
     queryKey: ['question', 'all', { cluster }],
     queryFn: () => program.account.questionState.all(),
   });
 
-  const useAccount = (account: PublicKey) =>
+  const questionSets = useQuery({
+    queryKey: ['question-set', 'all', { cluster }],
+    queryFn: () => program.account.questionSetState.all(),
+  });
+
+  const useQuestion = (account: PublicKey) =>
     useQuery({
       queryKey: ['question', 'fetch', { cluster, account }],
       queryFn: () => program.account.questionState.fetch(account),
+    });
+
+  const useQuestionSet = (account: PublicKey) =>
+    useQuery({
+      queryKey: ['question', 'fetch', { cluster, account }],
+      queryFn: () => program.account.questionSetState.fetch(account),
     });
 
   const getProgramAccount = useQuery({
@@ -64,7 +76,7 @@ export function useProgram() {
     },
     onSuccess: (signature) => {
       transactionToast(signature);
-      accounts.refetch();
+      questions.refetch();
       push(`/${Route.QUESTIONS}`);
     },
     onError: (error) => {
@@ -91,7 +103,7 @@ export function useProgram() {
     },
     onSuccess: (signature) => {
       transactionToast(signature);
-      accounts.refetch();
+      questions.refetch();
       push(`/${Route.QUESTIONS}`);
     },
     onError: (error) => {
@@ -99,7 +111,7 @@ export function useProgram() {
     },
   });
 
-  const useDeleteAccount = (account: PublicKey) =>
+  const useDeleteQuestion = (account: PublicKey) =>
     useMutation({
       mutationKey: ['question', 'delete', { cluster, account }],
       mutationFn: (id: string) =>
@@ -111,19 +123,95 @@ export function useProgram() {
           .rpc(),
       onSuccess: (tx) => {
         transactionToast(tx);
-        accounts.refetch();
+        questions.refetch();
         push(`/${Route.QUESTIONS}`);
+      },
+    });
+
+  const createQuestionSet = useMutation<string, Error, IQuestionSet>({
+    mutationKey: ['question-set', 'create', { cluster }],
+    mutationFn: async ({ id, title, questions, owner }) => {
+      const [address] = await PublicKey.findProgramAddress(
+        [Buffer.from(id), owner.toBuffer()],
+        programId
+      );
+
+      return (
+        program.methods
+          .createQuestionSet(id, title, questions)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .accounts({ question_set: address })
+          .rpc()
+      );
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      questionSets.refetch();
+      push(`/${Route.SETS}`);
+    },
+    onError: (error) => {
+      toast.error(`Failed to create question set: ${error.message}`);
+    },
+  });
+
+  const updateQuestionSet = useMutation<string, Error, IQuestionSet>({
+    mutationKey: ['question-set', 'update', { cluster }],
+    mutationFn: async ({ id, title, questions, owner }) => {
+      const [address] = await PublicKey.findProgramAddress(
+        [Buffer.from(id), owner.toBuffer()],
+        programId
+      );
+
+      return (
+        program.methods
+          .updateQuestionSet(id, title, questions)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .accounts({ question_set: address })
+          .rpc()
+      );
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      questionSets.refetch();
+      push(`/${Route.SETS}`);
+    },
+    onError: (error) => {
+      toast.error(`Failed to update question set: ${error.message}`);
+    },
+  });
+
+  const useDeleteQuestionSet = (account: PublicKey) =>
+    useMutation({
+      mutationKey: ['question-set', 'delete', { cluster, account }],
+      mutationFn: (id: string) =>
+        program.methods
+          .deleteQuestionSet(id)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .accounts({ question_set: account })
+          .rpc(),
+      onSuccess: (tx) => {
+        transactionToast(tx);
+        questionSets.refetch();
+        push(`/${Route.SETS}`);
       },
     });
 
   return {
     program,
     programId,
-    accounts,
+    questions,
+    questionSets,
     getProgramAccount,
     createQuestion,
     updateQuestion,
-    useAccount,
-    useDeleteAccount,
+    createQuestionSet,
+    updateQuestionSet,
+    useQuestion,
+    useQuestionSet,
+    useDeleteQuestion,
+    useDeleteQuestionSet,
   };
 }
