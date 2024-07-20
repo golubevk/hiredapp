@@ -14,6 +14,51 @@ export type Counter = {
   };
   instructions: [
     {
+      name: 'createJob';
+      discriminator: [178, 130, 217, 110, 100, 27, 82, 119];
+      accounts: [
+        {
+          name: 'job';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
+        }
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        },
+        {
+          name: 'title';
+          type: 'string';
+        },
+        {
+          name: 'questionSet';
+          type: 'string';
+        }
+      ];
+    },
+    {
       name: 'createQuestion';
       discriminator: [222, 74, 49, 30, 160, 220, 179, 27];
       accounts: [
@@ -102,6 +147,43 @@ export type Counter = {
       ];
     },
     {
+      name: 'deleteJob';
+      discriminator: [126, 220, 31, 28, 47, 124, 31, 145];
+      accounts: [
+        {
+          name: 'job';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
+        }
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        }
+      ];
+    },
+    {
       name: 'deleteQuestion';
       discriminator: [157, 108, 81, 22, 30, 165, 196, 123];
       accounts: [
@@ -171,6 +253,51 @@ export type Counter = {
       args: [
         {
           name: 'id';
+          type: 'string';
+        }
+      ];
+    },
+    {
+      name: 'updateJob';
+      discriminator: [83, 224, 93, 51, 200, 36, 89, 214];
+      accounts: [
+        {
+          name: 'job';
+          writable: true;
+          pda: {
+            seeds: [
+              {
+                kind: 'arg';
+                path: 'id';
+              },
+              {
+                kind: 'account';
+                path: 'owner';
+              }
+            ];
+          };
+        },
+        {
+          name: 'owner';
+          writable: true;
+          signer: true;
+        },
+        {
+          name: 'systemProgram';
+          address: '11111111111111111111111111111111';
+        }
+      ];
+      args: [
+        {
+          name: 'id';
+          type: 'string';
+        },
+        {
+          name: 'title';
+          type: 'string';
+        },
+        {
+          name: 'questionSet';
           type: 'string';
         }
       ];
@@ -266,6 +393,10 @@ export type Counter = {
   ];
   accounts: [
     {
+      name: 'jobState';
+      discriminator: [95, 104, 196, 170, 253, 67, 75, 2];
+    },
+    {
       name: 'questionSetState';
       discriminator: [200, 127, 50, 187, 32, 198, 43, 140];
     },
@@ -275,6 +406,30 @@ export type Counter = {
     }
   ];
   types: [
+    {
+      name: 'jobState';
+      type: {
+        kind: 'struct';
+        fields: [
+          {
+            name: 'owner';
+            type: 'pubkey';
+          },
+          {
+            name: 'id';
+            type: 'string';
+          },
+          {
+            name: 'title';
+            type: 'string';
+          },
+          {
+            name: 'questionSet';
+            type: 'string';
+          }
+        ];
+      };
+    },
     {
       name: 'questionSetState';
       type: {

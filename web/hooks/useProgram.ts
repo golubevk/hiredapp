@@ -15,6 +15,7 @@ import { PublicKey, type Cluster } from '@solana/web3.js';
 import { Route } from '@/interfaces/routes';
 import { type IQuestion } from '@/interfaces/question';
 import { type IQuestionSet } from '@/interfaces/question-set';
+import { type IJob } from '@/interfaces/job';
 
 export function useProgram() {
   const { connection } = useConnection();
@@ -40,6 +41,11 @@ export function useProgram() {
     queryFn: () => program.account.questionSetState.all(),
   });
 
+  const jobs = useQuery({
+    queryKey: ['job', 'all', { cluster }],
+    queryFn: () => program.account.jobState.all(),
+  });
+
   const useQuestion = (account: PublicKey) =>
     useQuery({
       queryKey: ['question', 'fetch', { cluster, account }],
@@ -50,6 +56,12 @@ export function useProgram() {
     useQuery({
       queryKey: ['question', 'fetch', { cluster, account }],
       queryFn: () => program.account.questionSetState.fetch(account),
+    });
+
+  const useJob = (account: PublicKey) =>
+    useQuery({
+      queryKey: ['job', 'fetch', { cluster, account }],
+      queryFn: () => program.account.jobState.fetch(account),
     });
 
   const getProgramAccount = useQuery({
@@ -199,19 +211,95 @@ export function useProgram() {
       },
     });
 
+  const createJob = useMutation<string, Error, IJob>({
+    mutationKey: ['job', 'create', { cluster }],
+    mutationFn: async ({ id, title, questionSet, owner }) => {
+      const [address] = await PublicKey.findProgramAddress(
+        [Buffer.from(id), owner.toBuffer()],
+        programId
+      );
+
+      return (
+        program.methods
+          .createJob(id, title, questionSet)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .accounts({ job: address })
+          .rpc()
+      );
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      questionSets.refetch();
+      push(`/${Route.JOBS}`);
+    },
+    onError: (error) => {
+      toast.error(`Failed to create question set: ${error.message}`);
+    },
+  });
+
+  const updateJob = useMutation<string, Error, IJob>({
+    mutationKey: ['job', 'update', { cluster }],
+    mutationFn: async ({ id, title, questionSet, owner }) => {
+      const [address] = await PublicKey.findProgramAddress(
+        [Buffer.from(id), owner.toBuffer()],
+        programId
+      );
+
+      return (
+        program.methods
+          .updateJob(id, title, questionSet)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .accounts({ job: address })
+          .rpc()
+      );
+    },
+    onSuccess: (signature) => {
+      transactionToast(signature);
+      questionSets.refetch();
+      push(`/${Route.JOBS}`);
+    },
+    onError: (error) => {
+      toast.error(`Failed to update question set: ${error.message}`);
+    },
+  });
+
+  const useDeleteJob = (account: PublicKey) =>
+    useMutation({
+      mutationKey: ['job', 'delete', { cluster, account }],
+      mutationFn: (id: string) =>
+        program.methods
+          .deleteJob(id)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .accounts({ job: account })
+          .rpc(),
+      onSuccess: (tx) => {
+        transactionToast(tx);
+        questionSets.refetch();
+        push(`/${Route.JOBS}`);
+      },
+    });
+
   return {
     program,
     programId,
     questions,
     questionSets,
+    jobs,
     getProgramAccount,
     createQuestion,
     updateQuestion,
     createQuestionSet,
     updateQuestionSet,
+    createJob,
+    updateJob,
     useQuestion,
     useQuestionSet,
+    useJob,
     useDeleteQuestion,
     useDeleteQuestionSet,
+    useDeleteJob,
   };
 }
